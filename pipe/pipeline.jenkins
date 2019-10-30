@@ -2,7 +2,7 @@
 
 properties([disableConcurrentBuilds()])
 
-def workspace = manager.build.getEnvVars()["WORKSPACE"]
+//def workspace = manager.build.getEnvVars()["WORKSPACE"]
 
 pipeline {
   agent {
@@ -15,21 +15,23 @@ pipeline {
     stage("First step") {
       steps {
         sh 'uname -a'
-        println workspace
+        echo 'FIRST STEP'
+        sh "ls -lat"
+//        println workspace
       }
     }
     stage("checkout git branch") {
       steps {
         //git branch: 'test1',
         //    url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
-
+        echo 'SECOND STEP'
         sh "ls -lat"
       }
     }
     stage("read params from file") {
       steps {
-        def fileName = "Version"
-        def paramFile = new File(fileName)
+//        def fileName = "Version"
+//        def paramFile = new File(fileName)
       }
     }
 
