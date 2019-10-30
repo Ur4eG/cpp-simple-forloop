@@ -61,6 +61,7 @@ pipeline {
         sh "mkdir -p build"
         sh "cc bin/Main.c -o build/${env.BRANCH}.${env.RELEASE}_${env.VERSION}"
         sh "ls -la build"
+        sh "build/${env.BRANCH}.${env.RELEASE}_${env.VERSION}"
       }
     }
 
