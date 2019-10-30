@@ -19,21 +19,20 @@ pipeline {
     timestamps()
   }
   stages {
+    //if (isUnix())
     stage("Init") {
       steps {
         sh 'uname -a'
-        echo 'FIRST STEP'
-        sh "ls -lat"
       }
     }
     stage("Get from Git") {
       steps {
-        git branch: 'test1',
+        git branch: ${env.BRANCH},
             //url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
             url: 'git@github.com:Ur4eG/cpp-simple-forloop.git'
         echo 'SECOND STEP'
-        sh "cat Version"
-        echo '-----------------'
+        //sh "cat Version"
+        //echo '-----------------'
         script {
           //env.BRANCH = 'temp1'
           env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
@@ -59,6 +58,8 @@ pipeline {
         sh "mkdir -p build"
         sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
         sh "ls -la build"
+
+        echo "RUN PROGRAM WHICH WE BUILT"
         sh "build/${env.OUTPUT_FILE}"
       }
     }
