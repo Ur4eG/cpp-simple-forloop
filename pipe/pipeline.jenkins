@@ -40,7 +40,7 @@ pipeline {
           env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION_UP = sh (script: 'echo $(($VERSION + 1))',returnStdout: true).trim()
-          env.OUTPUT_FILE = ${env.BRANCH}.${env.RELEASE}_${env.VERSION_UP}
+          //env.OUTPUT_FILE = ${env.BRANCH}.${env.RELEASE}_${env.VERSION_UP}
         }
 
       }
