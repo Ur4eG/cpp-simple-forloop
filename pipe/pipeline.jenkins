@@ -4,12 +4,13 @@ properties([disableConcurrentBuilds()])
 
 //def workspace = manager.build.getEnvVars()["WORKSPACE"]
 
+
 pipeline {
   agent {
     label 'master'
   }
   parameters {
-    string(name: 'BRANCH', defaultValue: 'test1', description: 'branch name to pull')
+    string(name: 'BRANCH', defaultValue: '', description: 'branch name to pull')
   }
   //triggers{ cron('H/15 * * * *') }
   options {
@@ -21,6 +22,7 @@ pipeline {
         sh 'uname -a'
         echo 'FIRST STEP'
         sh "ls -lat"
+        env,BRANCH = 'test1'
 //        println workspace
       }
     }
@@ -30,16 +32,17 @@ pipeline {
         //    url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
         echo 'SECOND STEP'
         sh "ls -lat"
+        echo "branch id is ${env.BRANCH}"
       }
     }
     stage("read params from file") {
       steps {
         echo 'THIRD STEP'
-        script {
-          def fileName = "Version"
-          echo "fileName is ${fileName}"
-          def paramFile = new File(fileName)
-        }
+        //script {
+          //def fileName = "Version"
+          //echo "fileName is ${fileName}"
+          //def paramFile = new File(fileName)
+        //}
       }
     }
 
