@@ -46,7 +46,9 @@ pipeline {
       }
     }
     stage("BRANCH"){
-
+      steps{
+        echo 'nop'
+      }
     }
     stage("BUILDING") {
       steps {
