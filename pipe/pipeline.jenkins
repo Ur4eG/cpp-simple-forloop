@@ -22,8 +22,9 @@ pipeline {
         sh 'uname -a'
         echo 'FIRST STEP'
         sh "ls -lat"
-        env.BRANCH = 'test1'
-//        println workspace
+        tmp_param =  sh (script: 'echo test1', returnStdout: true).trim()
+        env.BRANCH = tmp_param
+        //        println workspace
       }
     }
     stage("checkout git branch") {
