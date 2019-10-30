@@ -7,7 +7,7 @@ pipeline {
     label 'master'
   }
   options {
-    timestamp()
+    timestamps()
   }
   stages {
     stage("First step") {
