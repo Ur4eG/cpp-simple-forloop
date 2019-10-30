@@ -7,7 +7,7 @@ pipeline {
     label 'master'
   }
   parameters {
-    string(name: 'BRANCH', defaultValue: '', description: 'branch name to pull')
+    string(name: 'BRANCH', defaultValue: 'temp1', description: 'branch name to pull')
     string(name: 'RELEASE', defaultValue: '', description: 'release type eg stable')
     string(name: 'DT', defaultValue: '', description: 'date in the file')
     string(name: 'VERSION', defaultValue: '', description: 'version')
@@ -35,7 +35,7 @@ pipeline {
         sh "cat Version"
         echo '-----------------'
         script {
-          env.BRANCH = 'temp1'
+          //env.BRANCH = 'temp1'
           env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
@@ -44,6 +44,9 @@ pipeline {
         }
 
       }
+    }
+    stage("BRANCH"){
+
     }
     stage("BUILDING") {
       steps {
@@ -65,6 +68,9 @@ pipeline {
       steps {
         echo "checking git status"
         sh "git status"
+        sh "git add *"
+        sh "git commit -m 'built with make/cc'"
+        sh "git push"
       }
     }
 
