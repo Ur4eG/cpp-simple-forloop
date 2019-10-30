@@ -52,8 +52,8 @@ pipeline {
         echo "release id is ${env.RELEASE}"
         echo "date id is ${env.DT}"
         echo "version id is ${env.VERSION}"
-        echo "version id is ${env.VERSION_UP}"
-        echo "version id is ${env.OUTPUT_FILE}"
+        echo "NEXT version id is ${env.VERSION_UP}"
+        echo "output filename is ${env.OUTPUT_FILE}"
 
         sh "mkdir -p build"
         //sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
