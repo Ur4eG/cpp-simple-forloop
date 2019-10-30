@@ -20,16 +20,16 @@ pipeline {
     }
     stage("checkout git branch") {
       steps {
-        git branch: 'test1',
-            url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
+        //git branch: 'test1',
+        //    url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
 
         sh "ls -lat"
       }
     }
     stage("read params from file") {
       steps {
-        fileName = "Version"
-        paramFile = new File(fileName)
+        def fileName = "Version"
+        def paramFile = new File(fileName)
       }
     }
 
