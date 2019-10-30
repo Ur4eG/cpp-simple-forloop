@@ -2,11 +2,6 @@
 
 properties([disableConcurrentBuilds()])
 
-//new_version=$(($version+1))
-
-//output_name=${BRANCH_ID}.${release}_${new_version}
-//echo output_name=${output_name} > vars.props
-
 pipeline {
   agent {
     label 'master'
@@ -24,7 +19,7 @@ pipeline {
     timestamps()
   }
   stages {
-    stage("First step") {
+    stage("Init") {
       steps {
         sh 'uname -a'
         echo 'FIRST STEP'
@@ -32,7 +27,7 @@ pipeline {
         //        println workspace
       }
     }
-    stage("Getting last version from Git") {
+    stage("Get from Git") {
       steps {
         git branch: 'test1',
             url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
@@ -45,11 +40,12 @@ pipeline {
           env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION_UP = sh (script: 'echo $(($VERSION + 1))',returnStdout: true).trim()
+          env.OUTPUT_FILE = ${env.BRANCH}.${env.RELEASE}_${env.VERSION_UP}
         }
 
       }
     }
-    stage("THIRD STEP") {
+    stage("BUILDING") {
       steps {
         echo 'THIRD STEP'
         echo "branch id is ${env.BRANCH}"
@@ -59,9 +55,14 @@ pipeline {
         echo "version id is ${env.VERSION_UP}"
 
         sh "mkdir -p build"
-        sh "cc bin/Main.c -o build/${env.BRANCH}.${env.RELEASE}_${env.VERSION}"
+        sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
         sh "ls -la build"
-        sh "build/${env.BRANCH}.${env.RELEASE}_${env.VERSION}"
+        sh "build/${env.OUTPUT_FILE}"
+      }
+    }
+    stage("Push to Git") {
+      steps {
+        sh "git status"
       }
     }
 
