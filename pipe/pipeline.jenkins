@@ -31,8 +31,7 @@ pipeline {
     stage("read params from file") {
       steps {
         echo 'THIRD STEP'
-//        def fileName = "Version"
-//        def paramFile = new File(fileName)
+
       }
     }
 
