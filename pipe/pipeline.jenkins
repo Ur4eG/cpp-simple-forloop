@@ -72,7 +72,7 @@ pipeline {
         sh "git status"
         sh "git add *"
         sh "git commit -m 'built with make/cc'"
-        sh "git push"
+        sh "git push --set-upstream origin test1"
       }
     }
 
