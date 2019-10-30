@@ -44,17 +44,23 @@ pipeline {
         echo '-----------------'
         script {
           env.BRANCH = 'temp1'
-          env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'')
+          env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
+          env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
+          env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
         }
         echo "branch id is ${env.BRANCH}"
-        echo "branch id is ${env.RELEASE}"
+        echo "release id is ${env.RELEASE}"
+        echo "date id is ${env.DT}"
+        echo "version id is ${env.VERSION}"
       }
     }
     stage("read params from file") {
       steps {
         echo 'THIRD STEP'
         echo "branch id is ${env.BRANCH}"
-        echo "branch id is ${env.RELEASE}"
+        echo "release id is ${env.RELEASE}"
+        echo "date id is ${env.DT}"
+        echo "version id is ${env.VERSION}"
         //script {
           //def fileName = "Version"
           //echo "fileName is ${fileName}"
