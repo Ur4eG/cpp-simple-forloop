@@ -2,6 +2,8 @@
 
 properties([disableConcurrentBuilds()])
 
+def workspace = manager.build.getEnvVars()["WORKSPACE"]
+
 pipeline {
   agent {
     label 'master'
@@ -13,6 +15,7 @@ pipeline {
     stage("First step") {
       steps {
         sh 'uname -a'
+        println workspace
       }
     }
     stage("checkout git branch") {
@@ -23,5 +26,12 @@ pipeline {
         sh "ls -lat"
       }
     }
+    stage("read params from file") {
+      steps {
+        fileName = "Version"
+        paramFile = new File(fileName)
+      }
+    }
+
   }
 }
