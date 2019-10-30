@@ -1,3 +1,3 @@
-release: unstable
+release: stable
 date: 20191030
-version: 2
+version: 3
