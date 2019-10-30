@@ -27,9 +27,11 @@ pipeline {
     }
     stage("Get from Git") {
       steps {
+        script{
         git branch: '${env.BRANCH}',
             //url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
             url: 'git@github.com:Ur4eG/cpp-simple-forloop.git'
+          }
         echo 'SECOND STEP'
         //sh "cat Version"
         //echo '-----------------'
