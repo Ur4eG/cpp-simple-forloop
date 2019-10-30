@@ -22,7 +22,7 @@ pipeline {
         sh 'uname -a'
         echo 'FIRST STEP'
         sh "ls -lat"
-        env,BRANCH = 'test1'
+        env.BRANCH = 'test1'
 //        println workspace
       }
     }
