@@ -74,8 +74,8 @@ pipeline {
         sh "git add *"
         sh 'git config --global credential.helper cache'
         sh 'git config --list'
-        //sh "git commit -m 'built with make/cc'"
-        //sh "git push --set-upstream origin test1"
+        sh "git commit -m 'built with make/cc'"
+        sh "git push --set-upstream origin test1"
       }
     }
 
