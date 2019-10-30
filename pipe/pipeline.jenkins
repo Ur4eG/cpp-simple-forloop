@@ -7,7 +7,8 @@ pipeline {
     label 'master'
   }
   parameters {
-    string(name: 'BRANCH', defaultValue: 'temp1', description: 'branch name to pull')
+    gitParameter(branchFilter: 'origin/(.*)', defaultValue: 'test1', name: 'BRANCH', type: 'PT_BRANCH')
+    //string(name: 'BRANCH', defaultValue: 'temp1', description: 'branch name to pull')
     string(name: 'RELEASE', defaultValue: '', description: 'release type eg stable')
     string(name: 'DT', defaultValue: '', description: 'date in the file')
     string(name: 'VERSION', defaultValue: '', description: 'version')
@@ -28,7 +29,7 @@ pipeline {
     stage("Get from Git") {
       steps {
         //script{
-        git branch: ${BRANCH},
+        git branch: "${params.BRANCH}",
             //url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
             url: 'git@github.com:Ur4eG/cpp-simple-forloop.git'
         //  }
@@ -49,7 +50,7 @@ pipeline {
     stage("BUILDING") {
       steps {
         echo 'Checking variables:'
-        echo "branch id is ${env.BRANCH}"
+        echo "branch id is ${params.BRANCH}"
         echo "release id is ${env.RELEASE}"
         echo "date id is ${env.DT}"
         echo "version id is ${env.VERSION}"
@@ -78,7 +79,7 @@ pipeline {
         //sh "git status"
         sh "git add *"
         sh "git commit -m 'built with make/cc'"
-        sh "git push --set-upstream origin ${env.BRANCH}"
+        sh "git push --set-upstream origin ${params.BRANCH}"
       }
     }
 
