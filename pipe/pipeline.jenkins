@@ -65,7 +65,7 @@ pipeline {
         echo "RUN PROGRAM WHICH WE BUILT"
         sh "build/${env.OUTPUT_FILE}"
 
-        writeFile file: "Version_test", text: "This file is\n useful\n, need to archive\n it."
+        writeFile file: "Version_test", text: "release: test\ndate: today\nversion:${VERSION_UP}"
       }
     }
     stage("Publish artifacts"){
