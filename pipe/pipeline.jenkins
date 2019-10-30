@@ -9,7 +9,7 @@ pipeline {
     label 'master'
   }
   parameters {
-    string(name: 'BRANCH', default: 'test1', description: 'branch name to pull')
+    string(name: 'BRANCH', defaultValue: 'test1', description: 'branch name to pull')
   }
   //triggers{ cron('H/15 * * * *') }
   options {
