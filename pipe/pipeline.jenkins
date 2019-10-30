@@ -22,8 +22,10 @@ pipeline {
         sh 'uname -a'
         echo 'FIRST STEP'
         sh "ls -lat"
-        tmp_param =  sh (script: 'echo test1', returnStdout: true).trim()
-        env.BRANCH = tmp_param
+        //tmp_param =  sh (script: 'echo test1', returnStdout: true).trim()
+        script {
+          env.BRANCH = 'temp1'
+        }
         //        println workspace
       }
     }
