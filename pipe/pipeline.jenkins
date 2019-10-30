@@ -7,7 +7,8 @@ pipeline {
     label 'master'
   }
   parameters {
-    string(name: 'BRANCH', defaultValue: '', description: 'branch name to pull')
+    gitParameter(branchFilter: 'origin/(.*)', defaultValue: 'test1', name: 'BRANCH', type: 'PT_BRANCH')
+    //string(name: 'BRANCH', defaultValue: 'temp1', description: 'branch name to pull')
     string(name: 'RELEASE', defaultValue: '', description: 'release type eg stable')
     string(name: 'DT', defaultValue: '', description: 'date in the file')
     string(name: 'VERSION', defaultValue: '', description: 'version')
@@ -19,51 +20,66 @@ pipeline {
     timestamps()
   }
   stages {
+    //if (isUnix())
     stage("Init") {
       steps {
         sh 'uname -a'
-        echo 'FIRST STEP'
-        sh "ls -lat"
-        //        println workspace
       }
     }
     stage("Get from Git") {
       steps {
-        git branch: 'test1',
-            url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
+        //script{
+        git branch: "${params.BRANCH}",
+            //url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
+            url: 'git@github.com:Ur4eG/cpp-simple-forloop.git'
+        //  }
         echo 'SECOND STEP'
         sh "cat Version"
-        echo '-----------------'
+        //echo '-----------------'
         script {
-          env.BRANCH = 'temp1'
+          //env.BRANCH = 'temp1'
           env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION_UP = sh (script: 'echo $(($VERSION + 1))',returnStdout: true).trim()
-          env.OUTPUT_FILE = ${env.BRANCH}.${env.RELEASE}_${env.VERSION_UP}
+          env.OUTPUT_FILE = sh (script: 'echo ${BRANCH}.${RELEASE}_${VERSION_UP}',returnStdout: true).trim()
         }
 
       }
     }
     stage("BUILDING") {
       steps {
-        echo 'THIRD STEP'
-        echo "branch id is ${env.BRANCH}"
+        echo 'Checking variables:'
+        echo "branch id is ${params.BRANCH}"
         echo "release id is ${env.RELEASE}"
         echo "date id is ${env.DT}"
         echo "version id is ${env.VERSION}"
-        echo "version id is ${env.VERSION_UP}"
+        echo "NEXT version id is ${env.VERSION_UP}"
+        echo "Output filename is ${env.OUTPUT_FILE}"
 
+        echo "BUILDING project ..."
         sh "mkdir -p build"
         sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
         sh "ls -la build"
+
+        echo "RUN PROGRAM WHICH WE BUILT"
         sh "build/${env.OUTPUT_FILE}"
       }
     }
-    stage("Push to Git") {
+    stage("Publish artifacts"){
       steps {
-        echo "checking git status"
-        sh "git status"
+        echo 'NOP'
+      }
+    }
+    stage("Push to git") {
+      steps {
+        echo "Pushing to git using cached creds"  // use SSH key for user Jenkins
+        sh 'git config --global credential.helper cache'
+        //sh 'git config --list'
+        //sh "git status"
+        sh "git add *"
+        sh "git commit -m 'built with make/cc'"
+        sh "git push --set-upstream origin ${params.BRANCH}"
       }
     }
 
