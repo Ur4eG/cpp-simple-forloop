@@ -56,9 +56,9 @@ pipeline {
         echo "output filename is ${env.OUTPUT_FILE}"
 
         sh "mkdir -p build"
-        //sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
-        //sh "ls -la build"
-        //sh "build/${env.OUTPUT_FILE}"
+        sh "cc bin/Main.c -o build/${env.OUTPUT_FILE}"
+        sh "ls -la build"
+        sh "build/${env.OUTPUT_FILE}"
       }
     }
     stage("Push to Git") {
