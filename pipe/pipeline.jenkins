@@ -43,7 +43,7 @@ pipeline {
           env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.DT = sh (script: 'cat Version|grep -i date|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
           env.VERSION = sh (script: 'cat Version|grep -i version|cut -f 2 -d ":"|sed \'s/^ *//g\'', returnStdout: true).trim()
-          env.VERSION_UP = sh (script: 'echo $(($env.VERSION+1))',returnStdout: true).trim()
+          env.VERSION_UP = sh (script: '$(($VERSION + 1))',returnStdout: true).trim()
         }
         echo "branch id is ${env.BRANCH}"
         echo "release id is ${env.RELEASE}"
