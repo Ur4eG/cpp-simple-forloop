@@ -15,5 +15,13 @@ pipeline {
         sh 'uname -a'
       }
     }
+    stage("checkout git branch") {
+      steps {
+        git branch: 'test1',
+            url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
+
+        sh "ls -lat"
+      }
+    }
   }
 }
