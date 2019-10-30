@@ -2,10 +2,25 @@
 
 properties([disableConcurrentBuilds()])
 
+//def workspace = manager.build.getEnvVars()["WORKSPACE"]
+//version=$(cat Version|grep -i version|cut -f 2 -d ":"|sed 's/^ *//g')
+
+//new_version=$(($version+1))
+
+//output_name=${BRANCH_ID}.${release}_${new_version}
+//echo output_name=${output_name} > vars.props
+
 pipeline {
   agent {
     label 'master'
   }
+  parameters {
+    string(name: 'BRANCH', defaultValue: '', description: 'branch name to pull')
+    string(name: 'RELEASE', defaultValue: '', description: 'release type eg stable')
+    string(name: 'DT', defaultValue: '', description: 'date in the file')
+    string(name: 'VERSION', defaultValue: '', description: 'version')
+  }
+  //triggers{ cron('H/15 * * * *') }
   options {
     timestamps()
   }
@@ -13,7 +28,40 @@ pipeline {
     stage("First step") {
       steps {
         sh 'uname -a'
+        echo 'FIRST STEP'
+        sh "ls -lat"
+        //tmp_param =  sh (script: 'echo test1', returnStdout: true).trim()
+
+        //        println workspace
       }
     }
+    stage("checkout git branch") {
+      steps {
+        git branch: 'test1',
+            url: 'https://github.com/Ur4eG/cpp-simple-forloop.git'
+        echo 'SECOND STEP'
+        sh "cat Version"
+        echo '-----------------'
+        script {
+          env.BRANCH = 'temp1'
+          env.RELEASE = sh (script: 'cat Version|grep -i release|cut -f 2 -d ":"|sed \'s/^ *//g\'')
+        }
+        echo "branch id is ${env.BRANCH}"
+        echo "branch id is ${env.RELEASE}"
+      }
+    }
+    stage("read params from file") {
+      steps {
+        echo 'THIRD STEP'
+        echo "branch id is ${env.BRANCH}"
+        echo "branch id is ${env.RELEASE}"
+        //script {
+          //def fileName = "Version"
+          //echo "fileName is ${fileName}"
+          //def paramFile = new File(fileName)
+        //}
+      }
+    }
+
   }
 }
