@@ -1,6 +1,6 @@
 #!groovy
 
-properties([disableConcurrentBuilds()])
+//properties([disableConcurrentBuilds()])
 
 pipeline {
   agent {
@@ -16,8 +16,11 @@ pipeline {
     string(name: 'OUTPUT_FILE', defaultValue: '', description: 'filename after build')
   }
   //triggers{ cron('H/15 * * * *') }
+  //triggers { pollSCM('H/15 * * * 1-5') }
   options {
     timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '10'))
+    disableConcurrentBuilds()
   }
   stages {
     //if (isUnix())
